@@ -93,3 +93,8 @@ declare module "*.svg" {
 # Para usar tamanhos proporcionais nos itens dos componentes
 
 - instala o pacote react-native-responsive-fontsize
+
+
+# Para ajustar componentes dentro da faixa de exibição no iphone
+
+- instala a biblioteca react-native-iphone-x-helper
