@@ -1,4 +1,5 @@
 import React from 'react';
+import { FlatList } from 'react-native';
 
 import {
     Container,
@@ -16,17 +17,30 @@ export function ImageSlider({ imageUrl }: Props) {
     return (
         <Container>
             <ImageIndexes>
-                <ImageIndex active={true} />
-                <ImageIndex active={false} />
-                <ImageIndex active={false} />
-                <ImageIndex active={false} />
+              {
+                imageUrl.map((_, index) => (
+                  <ImageIndex 
+                    key={String(index)}
+                    active={true} 
+                  />
+                ))
+              }
             </ImageIndexes>
-            <CarImageWrapper>
-                <CarImage
-                    source={{uri: imageUrl[0]}}
+            
+            <FlatList 
+              data={imageUrl}
+              keyExtractor={key => key}
+              renderItem={({ item }) => (
+                <CarImageWrapper>
+                  <CarImage
+                    source={{uri: item}}
                     resizeMode="contain"
-                />
-            </CarImageWrapper>
+                  />
+                </CarImageWrapper>
+              )}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+            />
 
         </Container>
   );
