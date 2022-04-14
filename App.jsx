@@ -17,6 +17,7 @@ import {
   Archivo_500Medium,
   Archivo_600SemiBold
 } from '@expo-google-fonts/archivo';
+
 import { Routes } from './src/routes';
 
 export default function App() {
