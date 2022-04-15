@@ -24,7 +24,6 @@ import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 import {
   Container,
   Header,
-  CarImages,
   Details,
   Description,
   Brand,

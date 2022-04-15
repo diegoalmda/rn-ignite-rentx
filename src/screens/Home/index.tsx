@@ -18,7 +18,9 @@ import { api } from '../../services/api';
 import { CarDTO } from '../../dtos/CarDTO';
 
 import { Car } from '../../components/Car';
-import { Load } from '../../components/Load';
+import { useTheme } from 'styled-components';
+import { RectButton, PanGestureHandler } from 'react-native-gesture-handler';
+import { LoadAnimation } from '../../components/LoadAnimation';
 
 import {
   Container,
@@ -27,8 +29,6 @@ import {
   HeaderContent,
   CarList
 } from './styles';
-import { useTheme } from 'styled-components';
-import { RectButton, PanGestureHandler } from 'react-native-gesture-handler';
 
 export function Home() {
   const [cars, setCars] = useState<CarDTO[]>([]);
@@ -115,7 +115,7 @@ export function Home() {
               } 
           </HeaderContent>
       </Header>
-      { loading ? <Load /> :
+      { loading ? <LoadAnimation /> :
         <CarList
             data={cars}
             keyExtractor={item => item.id}
