@@ -48,7 +48,6 @@ export function SignUpFirstStep() {
       });
 
       const data = { name, email, driverLicense };
-
       await schema.validate(data);
       
       navigation.navigate('SignUpSecondStep', { user: data });
