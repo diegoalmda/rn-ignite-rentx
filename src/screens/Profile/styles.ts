@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components/native';
 import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 interface OptionProps {
   active: boolean;
@@ -10,6 +11,8 @@ interface OptionProps {
 export const Container = styled.View`
   background-color: ${({ theme }) => theme.colors.background_primary};
 `;
+
+export const LogoutButtonContainer = styled(GestureHandlerRootView)``;
 
 export const Header = styled.View`
   width: 100%;
@@ -53,6 +56,15 @@ export const Photo = styled.Image`
   border-radius: 90px;
 `;
 
+export const PhotoButtonContainer = styled(GestureHandlerRootView)` 
+  width: 40px;
+  height: 40px;
+  
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+`;
+
 export const PhotoButton = styled(RectButton)`
   width: 40px;
   height: 40px;
@@ -61,10 +73,6 @@ export const PhotoButton = styled(RectButton)`
 
   justify-content: center;
   align-items: center;
-
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
 `;
 
 

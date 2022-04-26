@@ -98,7 +98,9 @@ export function CarDetails() {
         ]}
       >
         <Header>
-          <BackButton onPress={handleBack} />
+          <BackButton 
+            onPress={handleBack} 
+          />
         </Header>
 
         <Animated.View style={[sliderCarsStyleAnimation, {marginTop: getStatusBarHeight() + 32}]}>

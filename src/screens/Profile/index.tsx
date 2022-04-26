@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   TouchableWithoutFeedback
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import * as Yup from 'yup'; 
 import { useNavigation } from '@react-navigation/native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useTheme } from 'styled-components';
@@ -26,19 +28,21 @@ import {
   Options,
   Option,
   OptionTitle,
-  Section
+  Section,
+  LogoutButtonContainer,
+  PhotoButtonContainer
 } from './styles';
 import { Input } from '../../components/Input';
+import { Button } from '../../components/Button';
 import { PasswordInput } from '../../components/PasswordInput';
 
 export function Profile() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, updateUser } = useAuth();
 
   const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit');
   const [avatar, setAvatar] = useState(user.avatar);
   const [name, setName] = useState(user.name);
   const [driverLicense, setDriverLicense] = useState(user.driver_license);
-
 
   const theme = useTheme();
   const navigation = useNavigation();
@@ -47,8 +51,57 @@ export function Profile() {
     navigation.goBack();
   }
 
+  async function handleSignOut() {
+    Alert.alert(
+      'Tem certeza?', 
+      'Se você sair, irá precisar de internet para reconectar.',
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel'
+        },
+        {
+          text: "Sair",
+          onPress: () => signOut()
+        }
+      ]
+    );    
+  }
+
   function handleOptionChange(optionSelected: 'dataEdit' | 'passwordEdit') {
     setOption(optionSelected);
+  }
+
+  async function handleProfileUpdate() {
+    try {
+      const schema = Yup.object().shape({
+        driverLicense: Yup.string()
+          .required('CNH deve ser informada.'),
+        name: Yup.string()
+          .required('O Nome deve ser informado')
+      });
+
+      const data = { name, driverLicense };
+      await schema.validate(data);
+
+      await updateUser({
+        id: user.id,
+        user_id: user.user_id,
+        email: user.email,
+        name,
+        driver_license: driverLicense,
+        avatar,
+        token: user.token
+      });
+
+      Alert.alert('Perfil atualizado.')
+
+    } catch(error) {
+      if(error instanceof Yup.ValidationError) {
+        Alert.alert('Erro: ', error.message);
+      }
+      Alert.alert('Não foi possível atualizar o perfil.');
+    }
   }
 
   async function handleAvatarSelect() {
@@ -79,24 +132,28 @@ export function Profile() {
                 onPress={handleBack} 
               />
               <HeaderTitle>Editar Perfil</HeaderTitle>
-              <LogoutButton onPress={signOut} >
-                <Feather 
-                  name="power" 
-                  size={24} 
-                  color={theme.colors.shape} 
-                />
-              </LogoutButton>
+              <LogoutButtonContainer>
+                <LogoutButton onPress={handleSignOut} >
+                  <Feather 
+                    name="power" 
+                    size={24} 
+                    color={theme.colors.shape} 
+                  />
+                </LogoutButton>
+              </LogoutButtonContainer>
             </HeaderTop>
 
             <PhotoContainer>
               { !!avatar && <Photo source={{ uri: avatar }} /> }
-              <PhotoButton onPress={handleAvatarSelect} >
-                <Feather 
-                  name="camera" 
-                  size={24} 
-                  color={theme.colors.shape} 
-                />
-              </PhotoButton>
+              <PhotoButtonContainer>
+                <PhotoButton onPress={handleAvatarSelect} >
+                  <Feather 
+                    name="camera" 
+                    size={24} 
+                    color={theme.colors.shape} 
+                  />
+                </PhotoButton>
+              </PhotoButtonContainer>
             </PhotoContainer>
           </Header>
 
@@ -161,6 +218,11 @@ export function Profile() {
               </Section>
 
             }
+
+            <Button 
+              title='Salvar alterações'
+              onPress={handleProfileUpdate}
+            />
 
           </Content>
         </Container>
