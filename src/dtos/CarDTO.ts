@@ -8,12 +8,12 @@ export interface CarDTO
   price: number;
   fuel_type: string;
   thumbnail: string;
-  accessories: {
+  accessories?: {
     id: string;
     type: string;
     name: string;
   }[];
-  photos: {
+  photos?: {
     id: string;
     photo: string;
   }[];
