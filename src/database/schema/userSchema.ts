@@ -30,4 +30,4 @@ const userSchema = tableSchema({
   ]
 });
 
-export { userSchema }
+export { userSchema };
